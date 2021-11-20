@@ -3,12 +3,12 @@ using System.Net.Http;
 
 namespace sish
 {
-    class Program
+    class Sish
     {
         private static readonly HttpClient client = new HttpClient();
         static void Main(string[] args)
         {
-            if (args.Length < 1)
+            if (args.Length < 2)
             {
                 Console.WriteLine("Please specify a three letter company code");
 
