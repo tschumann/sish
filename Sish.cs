@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 
 namespace sish
@@ -15,11 +16,16 @@ namespace sish
                 System.Environment.Exit(1);
             }
 
-            string code = args[0];
+            string code = args[1];
             string statisticsUrl = $"https://asx.api.markitdigital.com/asx-research/1.0/companies/{code}/key-statistics";
 
             HttpResponseMessage response = client.GetAsync(statisticsUrl).Result;
-            Console.WriteLine(response.Content.ReadAsStringAsync());
+            string result = response.Content.ReadAsStringAsync().Result;
+
+            Console.WriteLine(result);
+
+            Directory.CreateDirectory("cache");
+            File.WriteAllText($"cache/{code}.json", result);
         }
     }
 }
