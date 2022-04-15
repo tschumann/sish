@@ -5,7 +5,7 @@ using System.Net.Http;
 
 namespace sish
 {
-    class DataLoader
+    public class DataLoader
     {
         private static readonly HttpClient client = new HttpClient();
         private string data { get; }

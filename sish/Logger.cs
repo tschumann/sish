@@ -2,7 +2,7 @@
 
 namespace sish
 {
-    class Logger
+    public class Logger
     {
         public static void Info(string message)
         {
