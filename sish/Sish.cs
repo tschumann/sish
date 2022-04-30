@@ -14,8 +14,12 @@ namespace sish
                 System.Environment.Exit(1);
             }
 
+            DateTime now = System.DateTime.Now;
+            DateTime then = now.AddDays(-7);
             string code = args[0];
-            DataLoader dataLoader = new DataLoader(code);
+            string start = then.Year + "-" + then.Month + "-" + then.Day;
+            string end = now.Year + "-" + now.Month + "-" + now.Day;
+            DataLoader dataLoader = new DataLoader(code, start, end);
         }
     }
 }
