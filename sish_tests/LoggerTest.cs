@@ -8,6 +8,12 @@ namespace sish_tests
     public class LoggerTest
     {
         [TestMethod]
+        public void TestTrace()
+        {
+            Logger.Trace("test");
+        }
+
+        [TestMethod]
         public void TestInfo()
         {
             Logger.Info("test");
