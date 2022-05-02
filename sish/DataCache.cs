@@ -5,14 +5,17 @@ using System.Net.Http.Headers;
 
 namespace sish
 {
-    public class DataLoader
+    /// <summary>
+    /// Class <c>DataCache</c> abstracts away the data storage. It gets it and caches it if required, otherwise it pulls from the cache.
+    /// </summary>
+    public class DataCache
     {
         private static readonly HttpClient client = new HttpClient();
         private string statistics { get; }
         private string header { get; }
         public string prices { get; }
 
-        public DataLoader(string code, string start, string end)
+        public DataCache(string code, string start, string end)
         {
             string statisticsFilename = $"cache/{code}-statistics.json";
             string headerFilename = $"cache/{code}-header.json";
@@ -57,12 +60,12 @@ namespace sish
                 {
                     prices = response.Content.ReadAsStringAsync().Result;
 
-                    Logger.Trace(statistics);
+                    Logger.Trace(prices);
 
                     Directory.CreateDirectory("cache");
 
                     Logger.Info($"Writing data to {priceDataFilename}");
-                    File.WriteAllText(priceDataFilename, statistics);
+                    File.WriteAllText(priceDataFilename, prices);
                 }
                 else
                 {
@@ -71,7 +74,10 @@ namespace sish
             }
         }
 
-        private string getOrLoadJsonFile(string url, string fileName)
+        /// <summary>
+        /// Return the JSON data from the local cache, or if it isn't cached, get it from the given URL and cache it.
+        /// </summary>
+        public static string getOrLoadJsonFile(string url, string fileName)
         {
             string json = null;
 
@@ -84,13 +90,13 @@ namespace sish
             {
                 Logger.Info($"Couldn't find {fileName}");
 
-                HttpResponseMessage headerResponse = client.GetAsync(url).Result;
+                HttpResponseMessage response = client.GetAsync(url).Result;
 
-                if (headerResponse.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
-                    json = headerResponse.Content.ReadAsStringAsync().Result;
+                    json = response.Content.ReadAsStringAsync().Result;
 
-                    Logger.Trace(header);
+                    Logger.Trace(json);
 
                     Directory.CreateDirectory("cache");
 
@@ -99,7 +105,7 @@ namespace sish
                 }
                 else
                 {
-                    Logger.Error($"Error from {url}: {headerResponse.ToString()}");
+                    Logger.Error($"Error from {url}: {response.ToString()}");
                 }
             }
 
