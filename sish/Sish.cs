@@ -20,6 +20,29 @@ namespace sish
             string end = now.Year + "-" + now.Month + "-" + now.Day;
             DataCache dataCache = new DataCache(code, start, end);
             DataParser dataParser = new DataParser(dataCache);
+
+            Account account = new Account(0, 100);
+
+            for (int i = 0; i < dataParser.openPrices.Count; i++)
+            {
+                Console.WriteLine(dataParser.openPrices[i]);
+                if (i >= 7)
+                {
+                    float lastWeeksPrice = dataParser.openPrices[i - 7].Item2;
+                    float todaysPrice = dataParser.openPrices[i].Item2;
+
+                    if (todaysPrice > lastWeeksPrice && account.CanSell(1))
+                    {
+                        account.Sell(1, todaysPrice);
+                    }
+                    else if (todaysPrice > lastWeeksPrice && account.CanBuy(1, todaysPrice))
+                    {
+                        account.Buy(1, todaysPrice);
+                    }
+                }
+            }
+
+            Console.WriteLine(account);
         }
     }
 }

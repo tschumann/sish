@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 using sish;
-using System;
 
 namespace sish_tests
 {

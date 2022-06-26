@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 
 namespace sish
 {
     class DataParser
     {
-        public OrderedDictionary openPrices = new OrderedDictionary();
+        public List<(string, float)> openPrices = new List<(string, float)>();
 
         public DataParser(DataCache dataCache)
         {
@@ -29,7 +28,7 @@ namespace sish
                     for (int j = 0; j < prices.dates.Count; j++)
                     {
                         Logger.Info(prices.dates[j] + " " + priceData[i].values[j]);
-                        openPrices.Add(prices.dates[j], priceData[i].values[j]);
+                        openPrices.Add((prices.dates[j], priceData[i].values[j]));
                     }
                 }
             }
