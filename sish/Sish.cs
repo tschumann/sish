@@ -33,11 +33,11 @@ namespace sish
 
                     if (todaysPrice > lastWeeksPrice && account.CanSell(1))
                     {
-                        account.Sell(1, todaysPrice);
+                        account.Sell(code, 1, todaysPrice);
                     }
                     else if (todaysPrice > lastWeeksPrice && account.CanBuy(1, todaysPrice))
                     {
-                        account.Buy(1, todaysPrice);
+                        account.Buy(code, 1, todaysPrice);
                     }
                 }
             }
