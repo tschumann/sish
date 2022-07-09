@@ -24,10 +24,12 @@ namespace sish
 
                     if (todaysPrice > lastWeeksPrice && account.CanSell(1))
                     {
+                        Logger.Trace("Selling");
                         account.Sell(code, 1, todaysPrice);
                     }
-                    else if (todaysPrice > lastWeeksPrice && account.CanBuy(1, todaysPrice))
+                    else if (todaysPrice < lastWeeksPrice && account.CanBuy(1, todaysPrice))
                     {
+                        Logger.Trace("Buying");
                         account.Buy(code, 1, todaysPrice);
                     }
                 }
