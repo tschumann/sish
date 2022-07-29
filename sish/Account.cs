@@ -1,18 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace sish
 {
     public class Account
     {
         int shareCount { get; set; }
-        float balance { get; set; }
+        public float balance { get; private set; }
+        int buyFeePercent { get; set; }
+        int sellFeePercent { get; set; }
+        int buyMargin { get; set; }
+        int sellMargin { get; set; }
         public List<Transaction> transactions { get; }
 
-        public Account(int startingCount, float startingBalance)
+        public Account()
         {
-            shareCount = startingCount;
+            transactions = new List<Transaction>();
+        }
+
+        [Obsolete("Use argumentless constructor instead")]
+        public Account(int startingShareCount, float startingBalance)
+        {
+            shareCount = startingShareCount;
             balance = startingBalance;
             transactions = new List<Transaction>();
+        }
+
+        public void setStartingBalance(float startingBalance)
+        {
+            if (transactions.Count > 0)
+            {
+                throw new Exception("Cannot set starting balance after starting");
+            }
+            balance = startingBalance;
         }
 
         public bool CanBuy(int count, float price)
@@ -29,7 +49,7 @@ namespace sish
         {
             if (!CanBuy(volume, sharePrice))
             {
-                throw new System.Exception("Not enough funds to buy");
+                throw new Exception("Not enough funds to buy");
             }
 
             float transactionPrice = (sharePrice * volume);
@@ -42,7 +62,7 @@ namespace sish
         {
             if (!CanSell(volume))
             {
-                throw new System.Exception("Not enough shares to sell");
+                throw new Exception("Not enough shares to sell");
             }
 
             float transactionPrice = (sharePrice * volume);

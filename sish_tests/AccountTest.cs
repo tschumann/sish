@@ -8,6 +8,16 @@ namespace sish_tests
     public class AccountTest
     {
         [TestMethod]
+        public void TestSetStartingBalance()
+        {
+            Account account = new Account();
+            Assert.AreEqual(0.0f, account.balance);
+
+            account.setStartingBalance(100.0f);
+            Assert.AreEqual(100.0f, account.balance);
+        }
+
+        [TestMethod]
         public void TestCanBuy()
         {
             Account account = new Account(0, 100);

@@ -22,6 +22,7 @@ namespace sish
             DataParser dataParser = new DataParser(dataCache);
 
             Simulator simulator = new Simulator();
+            simulator.account.setStartingBalance(100.0f);
 
             Logger.Info("Start: " + simulator.account);
 

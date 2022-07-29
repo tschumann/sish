@@ -12,6 +12,7 @@ namespace sish_tests
         public void TestRun()
         {
             Simulator simulator = new Simulator();
+            simulator.account.setStartingBalance(100.0f);
             List<(string, float)> prices = new List<(string, float)>
             {
                 ("2022-06-24T00:00:00", 1.0f),

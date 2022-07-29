@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace sish
 {
@@ -9,7 +8,7 @@ namespace sish
 
         public Simulator()
         {
-            account = new Account(0, 100);
+            account = new Account();
         }
 
         public void Run(string code, List<(string, float)> prices)
