@@ -16,7 +16,6 @@ namespace sish
         {
             for (int i = 0; i < prices.Count; i++)
             {
-                Console.WriteLine(prices[i]);
                 if (i >= 7)
                 {
                     float lastWeeksPrice = prices[i - 7].Item2;
@@ -24,12 +23,12 @@ namespace sish
 
                     if (todaysPrice > lastWeeksPrice && account.CanSell(1))
                     {
-                        Logger.Trace("Selling");
+                        Logger.Trace("Selling (price: " + prices[i] + ")");
                         account.Sell(code, 1, todaysPrice);
                     }
                     else if (todaysPrice < lastWeeksPrice && account.CanBuy(1, todaysPrice))
                     {
-                        Logger.Trace("Buying");
+                        Logger.Trace("Buying (price: " + prices[i] + ")");
                         account.Buy(code, 1, todaysPrice);
                     }
                 }

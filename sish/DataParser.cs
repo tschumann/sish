@@ -27,7 +27,6 @@ namespace sish
                 {
                     for (int j = 0; j < prices.dates.Count; j++)
                     {
-                        Logger.Info(prices.dates[j] + " " + priceData[i].values[j]);
                         openPrices.Add((prices.dates[j], priceData[i].values[j]));
                     }
                 }

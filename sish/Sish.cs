@@ -22,9 +22,12 @@ namespace sish
             DataParser dataParser = new DataParser(dataCache);
 
             Simulator simulator = new Simulator();
+
+            Logger.Info("Start: " + simulator.account);
+
             simulator.Run(code, dataParser.openPrices);
 
-            Console.WriteLine(simulator.account);
+            Logger.Info("End: " + simulator.account);
         }
     }
 }
