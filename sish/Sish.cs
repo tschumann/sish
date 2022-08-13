@@ -10,9 +10,10 @@ namespace sish
             {
                 Logger.Error("Please specify a three letter company code");
 
-                System.Environment.Exit(1);
+                Environment.Exit(1);
             }
 
+            int days = 90;
             Simulator simulator = new Simulator();
             simulator.account.setStartingBalance(100.0f);
 
@@ -28,14 +29,19 @@ namespace sish
                     simulator.account.sellFeePercent = Int32.Parse(args[i + 1]);
                     i++;
                 }
+                if (args[i] == "--days")
+                {
+                    days = Int32.Parse(args[i + 1]);
+                    i++;
+                }
             }
 
-            DateTime now = System.DateTime.Now;
-            DateTime then = now.AddDays(-7);
+            DateTime now = DateTime.Now;
+            DateTime then = now.AddDays(-days);
             string code = args[0];
             string start = then.Year + "-" + then.Month + "-" + then.Day;
             string end = now.Year + "-" + now.Month + "-" + now.Day;
-            DataCache dataCache = new DataCache(code, start, end);
+            DataCache dataCache = new DataCache(code, start, end, days);
             DataParser dataParser = new DataParser(dataCache);
 
             Logger.Info("Start: " + simulator.account);

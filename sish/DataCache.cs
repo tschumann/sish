@@ -15,7 +15,7 @@ namespace sish
         private string header { get; }
         public string prices { get; }
 
-        public DataCache(string code, string start, string end)
+        public DataCache(string code, string start, string end, int days)
         {
             string statisticsFilename = $"cache/{code}-statistics.json";
             string headerFilename = $"cache/{code}-header.json";
@@ -42,7 +42,7 @@ namespace sish
 
             string symbol = headerData.data.xid;
             // TODO: work out a neat way to substitute stuff in here
-            request.Content = new StringContent("{\"days\":91,\"dataNormalized\":false,\"dataPeriod\":\"Day\",\"dataInterval\":1,\"realtime\":false,\"yFormat\":\"0.###\",\"timeServiceFormat\":\"JSON\",\"rulerIntradayStart\":26,\"rulerIntradayStop\":3,\"rulerInterdayStart\":10957,\"rulerInterdayStop\":365,\"returnDateType\":\"ISO8601\",\"elements\":[{\"Label\":\"0c919013\",\"Type\":\"price\",\"Symbol\":\"" + symbol + "\",\"OverlayIndicators\":[],\"Params\":{}},{\"Label\":\"4c2fff58\",\"Type\":\"volume\",\"Symbol\":\"" + symbol + "\",\"OverlayIndicators\":[],\"Params\":{}}]}");
+            request.Content = new StringContent("{\"days\":" + days + ",\"dataNormalized\":false,\"dataPeriod\":\"Day\",\"dataInterval\":1,\"realtime\":false,\"yFormat\":\"0.###\",\"timeServiceFormat\":\"JSON\",\"rulerIntradayStart\":26,\"rulerIntradayStop\":3,\"rulerInterdayStart\":10957,\"rulerInterdayStop\":365,\"returnDateType\":\"ISO8601\",\"elements\":[{\"Label\":\"0c919013\",\"Type\":\"price\",\"Symbol\":\"" + symbol + "\",\"OverlayIndicators\":[],\"Params\":{}},{\"Label\":\"4c2fff58\",\"Type\":\"volume\",\"Symbol\":\"" + symbol + "\",\"OverlayIndicators\":[],\"Params\":{}}]}");
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
 
             try
