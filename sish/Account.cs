@@ -5,12 +5,12 @@ namespace sish
 {
     public class Account
     {
-        int shareCount { get; set; }
+        public int shareCount { get; set; }
         public float balance { get; private set; }
-        int buyFeePercent { get; set; }
-        int sellFeePercent { get; set; }
-        int buyMargin { get; set; }
-        int sellMargin { get; set; }
+        public int buyFeePercent { private get; set; }
+        public int sellFeePercent { private get; set; }
+        public int buyMargin { get; set; }
+        public int sellMargin { get; set; }
         public List<Transaction> transactions { get; }
 
         public Account()
@@ -37,7 +37,9 @@ namespace sish
 
         public bool CanBuy(int count, float price)
         {
-            return (count * price) <= balance;
+            float buyPrice = count * price;
+            float fee = buyPrice * (buyFeePercent / 100.0f);
+            return (buyPrice + fee) <= balance;
         }
 
         public bool CanSell(int count)
@@ -53,9 +55,10 @@ namespace sish
             }
 
             float transactionPrice = (sharePrice * volume);
+            float transactionFee = transactionPrice * (buyFeePercent / 100.0f);
             shareCount += volume;
-            balance -= transactionPrice;
-            transactions.Add(new Transaction(code, volume, transactionPrice, Transaction.TransactionType.PURCHASE));
+            balance -= (transactionPrice + transactionFee);
+            transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, Transaction.TransactionType.PURCHASE));
         }
 
         public void Sell(string code, int volume, float sharePrice)
@@ -66,9 +69,10 @@ namespace sish
             }
 
             float transactionPrice = (sharePrice * volume);
+            float transactionFee = transactionPrice * (sellFeePercent / 100.0f);
             shareCount -= volume;
-            balance += transactionPrice;
-            transactions.Add(new Transaction(code, volume, transactionPrice, Transaction.TransactionType.SALE));
+            balance += (transactionPrice - transactionFee);
+            transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, Transaction.TransactionType.SALE));
         }
 
         public override string ToString()
