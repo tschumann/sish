@@ -15,23 +15,33 @@ namespace sish
         {
             for (int i = 0; i < prices.Count; i++)
             {
-                if (i >= 7)
+                if (i >= account.timePeriod)
                 {
-                    float lastWeeksPrice = prices[i - 7].Item2;
-                    float todaysPrice = prices[i].Item2;
+                    float previousPrice = prices[i - account.timePeriod].Item2;
+                    float currentPrice = prices[i].Item2;
 
-                    if (todaysPrice > lastWeeksPrice && account.CanSell(1))
+                    if (account.CanSell(1) && ShouldSell(currentPrice, previousPrice))
                     {
                         Logger.Trace("Selling (price: " + prices[i] + ")");
-                        account.Sell(code, 1, todaysPrice);
+                        account.Sell(code, 1, currentPrice);
                     }
-                    else if (todaysPrice < lastWeeksPrice && account.CanBuy(1, todaysPrice))
+                    else if (account.CanBuy(1, currentPrice) && ShouldBuy(currentPrice, previousPrice))
                     {
                         Logger.Trace("Buying (price: " + prices[i] + ")");
-                        account.Buy(code, 1, todaysPrice);
+                        account.Buy(code, 1, currentPrice);
                     }
                 }
             }
+        }
+
+        public bool ShouldBuy(float currentPrice, float previousPrice)
+        {
+            return currentPrice < previousPrice;
+        }
+
+        public bool ShouldSell(float currentPrice, float previousPrice)
+        {
+            return currentPrice > previousPrice;
         }
     }
 }

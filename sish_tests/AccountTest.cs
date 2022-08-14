@@ -18,6 +18,16 @@ namespace sish_tests
         }
 
         [TestMethod]
+        public void TestSetTimePeriod()
+        {
+            Account account = new Account();
+            Assert.AreEqual(7, account.timePeriod);
+
+            account.setTimePeriod(30);
+            Assert.AreEqual(30, account.timePeriod);
+        }
+
+        [TestMethod]
         public void TestCanBuy()
         {
             Account account = new Account(0, 100);

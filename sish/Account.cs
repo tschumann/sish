@@ -11,10 +11,12 @@ namespace sish
         public int sellFeePercent { private get; set; }
         public int buyMargin { get; set; }
         public int sellMargin { get; set; }
+        public int timePeriod { get; private set; }
         public List<Transaction> transactions { get; }
 
         public Account()
         {
+            timePeriod = 7;
             transactions = new List<Transaction>();
         }
 
@@ -23,6 +25,7 @@ namespace sish
         {
             shareCount = startingShareCount;
             balance = startingBalance;
+            timePeriod = 7;
             transactions = new List<Transaction>();
         }
 
@@ -33,6 +36,15 @@ namespace sish
                 throw new Exception("Cannot set starting balance after starting");
             }
             balance = startingBalance;
+        }
+
+        public void setTimePeriod(int timePeriod)
+        {
+            if (timePeriod <= 0)
+            {
+                throw new Exception("Cannot set timePeriod to less than 1 day");
+            }
+            this.timePeriod = timePeriod;
         }
 
         public bool CanBuy(int count, float price)

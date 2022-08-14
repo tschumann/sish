@@ -96,5 +96,25 @@ namespace sish_tests
             Assert.AreEqual("99.16", simulator.account.balance.ToString("0.00"));
             Assert.AreEqual(1, simulator.account.shareCount);
         }
+
+        [TestMethod]
+
+        public void TestShouldBuy()
+        {
+            Simulator simulator = new Simulator();
+            Assert.AreEqual(false, simulator.ShouldBuy(1, 0.5f));
+            Assert.AreEqual(false, simulator.ShouldBuy(1, 1));
+            Assert.AreEqual(true, simulator.ShouldBuy(1, 1.5f));
+        }
+
+        [TestMethod]
+
+        public void TestShouldSell()
+        {
+            Simulator simulator = new Simulator();
+            Assert.AreEqual(true, simulator.ShouldSell(1, 0.5f));
+            Assert.AreEqual(false, simulator.ShouldSell(1, 1));
+            Assert.AreEqual(false, simulator.ShouldSell(1, 1.5f));
+        }
     }
 }
