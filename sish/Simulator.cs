@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace sish
 {
@@ -11,7 +12,7 @@ namespace sish
             account = new Account();
         }
 
-        public void Run(string code, List<(string, float)> prices)
+        public void Run(string code, List<(DateTime, float)> prices)
         {
             for (int i = 0; i < prices.Count; i++)
             {
@@ -23,12 +24,12 @@ namespace sish
                     if (account.CanSell(1) && ShouldSell(currentPrice, previousPrice))
                     {
                         Logger.Trace("Selling (price: " + prices[i] + ")");
-                        account.Sell(code, 1, currentPrice);
+                        account.Sell(code, 1, currentPrice, DateTime.Now);
                     }
                     else if (account.CanBuy(1, currentPrice) && ShouldBuy(currentPrice, previousPrice))
                     {
                         Logger.Trace("Buying (price: " + prices[i] + ")");
-                        account.Buy(code, 1, currentPrice);
+                        account.Buy(code, 1, currentPrice, DateTime.Now);
                     }
                 }
             }

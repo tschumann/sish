@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace sish
 {
     class DataParser
     {
-        public List<(string, float)> openPrices = new List<(string, float)>();
+        public List<(DateTime, float)> openPrices = new List<(DateTime, float)>();
 
         public DataParser(DataCache dataCache)
         {
@@ -18,17 +19,20 @@ namespace sish
                 if (prices.elements[i].type == "price")
                 {
                     priceData = prices.elements[i].componentSeries;
+                    break;
                 }
             }
 
             for (int i = 0; i < priceData.Count; i++)
             {
+                // get the open prices
                 if (priceData[i].type == "Open")
                 {
                     for (int j = 0; j < prices.dates.Count; j++)
                     {
-                        openPrices.Add((prices.dates[j], priceData[i].values[j]));
+                        openPrices.Add((DateTime.Parse(prices.dates[j]), priceData[i].values[j]));
                     }
+                    break;
                 }
             }
         }

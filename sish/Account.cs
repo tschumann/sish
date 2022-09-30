@@ -59,7 +59,7 @@ namespace sish
             return shareCount >= count;
         }
 
-        public void Buy(string code, int volume, float sharePrice)
+        public void Buy(string code, int volume, float sharePrice, DateTime dateTime)
         {
             if (!CanBuy(volume, sharePrice))
             {
@@ -70,10 +70,10 @@ namespace sish
             float transactionFee = transactionPrice * (buyFeePercent / 100.0f);
             shareCount += volume;
             balance -= (transactionPrice + transactionFee);
-            transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, Transaction.TransactionType.PURCHASE));
+            transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, 0.0f, dateTime, Transaction.TransactionType.PURCHASE));
         }
 
-        public void Sell(string code, int volume, float sharePrice)
+        public void Sell(string code, int volume, float sharePrice, DateTime dateTime)
         {
             if (!CanSell(volume))
             {
@@ -82,9 +82,10 @@ namespace sish
 
             float transactionPrice = (sharePrice * volume);
             float transactionFee = transactionPrice * (sellFeePercent / 100.0f);
+            float tax = 0.0f;
             shareCount -= volume;
             balance += (transactionPrice - transactionFee);
-            transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, Transaction.TransactionType.SALE));
+            transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, tax, dateTime, Transaction.TransactionType.SALE));
         }
 
         public override string ToString()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 using sish;
@@ -13,18 +14,18 @@ namespace sish_tests
         {
             Simulator simulator = new Simulator();
             simulator.account.setStartingBalance(100.0f);
-            List<(string, float)> prices = new List<(string, float)>
+            List<(DateTime, float)> prices = new List<(DateTime, float)>
             {
-                ("2022-06-24T00:00:00", 1.0f),
-                ("2022-06-27T00:00:00", 1.0f),
-                ("2022-06-28T00:00:00", 1.0f),
-                ("2022-06-29T00:00:00", 1.0f),
-                ("2022-06-30T00:00:00", 1.0f),
-                ("2022-07-01T00:00:00", 1.0f),
-                ("2022-07-04T00:00:00", 1.0f),
-                ("2022-07-05T00:00:00", 0.9f),
-                ("2022-07-06T00:00:00", 0.9f),
-                ("2022-07-07T00:00:00", 1.1f)
+                (DateTime.Parse("2022-06-24T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-27T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-28T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-29T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-30T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-07-01T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-07-04T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-07-05T00:00:00"), 0.9f),
+                (DateTime.Parse("2022-07-06T00:00:00"), 0.9f),
+                (DateTime.Parse("2022-07-07T00:00:00"), 1.1f)
             };
             simulator.Run("XYZ", prices);
 
@@ -59,18 +60,18 @@ namespace sish_tests
             simulator.account.setStartingBalance(100.0f);
             simulator.account.buyFeePercent = 5;
             simulator.account.sellFeePercent = 5;
-            List<(string, float)> prices = new List<(string, float)>
+            List<(DateTime, float)> prices = new List<(DateTime, float)>
             {
-                ("2022-06-24T00:00:00", 1.0f),
-                ("2022-06-27T00:00:00", 1.0f),
-                ("2022-06-28T00:00:00", 1.0f),
-                ("2022-06-29T00:00:00", 1.0f),
-                ("2022-06-30T00:00:00", 1.0f),
-                ("2022-07-01T00:00:00", 1.0f),
-                ("2022-07-04T00:00:00", 1.0f),
-                ("2022-07-05T00:00:00", 0.9f),
-                ("2022-07-06T00:00:00", 0.9f),
-                ("2022-07-07T00:00:00", 1.1f)
+                (DateTime.Parse("2022-06-24T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-27T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-28T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-29T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-06-30T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-07-01T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-07-04T00:00:00"), 1.0f),
+                (DateTime.Parse("2022-07-05T00:00:00"), 0.9f),
+                (DateTime.Parse("2022-07-06T00:00:00"), 0.9f),
+                (DateTime.Parse("2022-07-07T00:00:00"), 1.1f)
             };
             simulator.Run("XYZ", prices);
 

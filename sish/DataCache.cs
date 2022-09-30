@@ -15,6 +15,9 @@ namespace sish
         private string header { get; }
         public string prices { get; }
 
+        /// <summary>
+        /// Download the price data for the given stock code between the given start and end times which should be a time period equalling the given number of days.
+        /// </summary>
         public DataCache(string code, string start, string end, int days)
         {
             string statisticsFilename = $"cache/{code}-statistics.json";
