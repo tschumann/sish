@@ -86,6 +86,45 @@ namespace sish
             shareCount -= volume;
             balance += (transactionPrice - transactionFee);
             transactions.Add(new Transaction(code, volume, transactionPrice, transactionFee, tax, dateTime, Transaction.TransactionType.SALE));
+
+            int volumeToProcess = volume;
+
+            foreach (Transaction transaction in transactions)
+            {
+                if (transaction.transactionType == Transaction.TransactionType.PURCHASE)
+                {
+                    // if all shares in the original purchase have been sold
+                    if (transaction.getVolumeSold() == transaction.volume)
+                    {
+                        // keep looking for another purchase
+                        continue;
+                    }
+                    else
+                    {
+                        // work out how many more shares are left to be sold from this purchase
+                        int volumeLeftInPurchase = transaction.volume - transaction.getVolumeSold();
+
+                        // if the number of shares left to process from this sale fits into this purchase
+                        if (volumeToProcess <= volumeLeftInPurchase)
+                        {
+                            // account for the number of shares left to process
+                            transaction.addToVolumeSold(volumeToProcess);
+                            volumeToProcess -= volumeToProcess;
+                        }
+                        else
+                        {
+                            // account for the number of shares that will fit
+                            transaction.addToVolumeSold(volumeLeftInPurchase);
+                            volumeToProcess -= volumeLeftInPurchase;
+                        }
+                    }
+                }
+            }
+
+            if (volumeToProcess != 0)
+            {
+                throw new InvalidOperationException("Trying to sell more shares than are held");
+            }
         }
 
         public override string ToString()

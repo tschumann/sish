@@ -31,7 +31,8 @@ namespace sish_tests
         [TestMethod]
         public void TestCanBuy()
         {
-            Account account = new Account(0, 100);
+            Account account = new Account();
+            account.setStartingBalance(100.0f);
 
             Assert.IsTrue(account.CanBuy(1, 20));
             Assert.IsFalse(account.CanBuy(1, 101));
@@ -54,7 +55,8 @@ namespace sish_tests
         [TestMethod]
         public void TestBuy()
         {
-            Account account = new Account(0, 5);
+            Account account = new Account();
+            account.setStartingBalance(5.0f);
 
             account.Buy("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:35:00"));
 
@@ -67,8 +69,9 @@ namespace sish_tests
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:35:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(0, transaction.getVolumeSold());
 
-            account.Buy("ABC", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
+            account.Buy("XYZ", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
 
             Assert.AreEqual(2, account.transactions.Count);
             transaction = account.transactions[0];
@@ -79,20 +82,23 @@ namespace sish_tests
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:35:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(0, transaction.getVolumeSold());
             transaction = account.transactions[1];
-            Assert.AreEqual("ABC", transaction.code);
+            Assert.AreEqual("XYZ", transaction.code);
             Assert.AreEqual(2, transaction.volume);
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(0, transaction.getVolumeSold());
         }
 
         [TestMethod]
         public void TestBuyWithFee()
         {
-            Account account = new Account(0, 10);
+            Account account = new Account();
+            account.setStartingBalance(10.0f);
             account.buyFeePercent = 5;
 
             account.Buy("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
@@ -106,8 +112,9 @@ namespace sish_tests
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(0, transaction.getVolumeSold());
 
-            account.Buy("ABC", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
+            account.Buy("XYZ", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
 
             Assert.AreEqual(2, account.transactions.Count);
             transaction = account.transactions[0];
@@ -115,36 +122,41 @@ namespace sish_tests
             Assert.AreEqual(1, transaction.volume);
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(0, transaction.getVolumeSold());
             transaction = account.transactions[1];
-            Assert.AreEqual("ABC", transaction.code);
+            Assert.AreEqual("XYZ", transaction.code);
             Assert.AreEqual(2, transaction.volume);
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual("0.20", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(0, transaction.getVolumeSold());
         }
 
         [TestMethod]
         public void TestSell()
         {
-            Account account = new Account(5, 0);
+            Account account = new Account();
+            account.setStartingBalance(5);
+            account.Buy("XYZ", 5, 1, DateTime.Parse("2021-09-30 21:32:00"));
 
             account.Sell("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
 
-            Assert.AreEqual(1, account.transactions.Count);
+            Assert.AreEqual(2, account.transactions.Count);
             Transaction transaction = account.transactions[0];
             Assert.AreEqual("XYZ", transaction.code);
-            Assert.AreEqual(1, transaction.volume);
-            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(5, transaction.volume);
+            Assert.AreEqual(5.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
-            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
-
-            account.Sell("ABC", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
-
-            Assert.AreEqual(2, account.transactions.Count);
-            transaction = account.transactions[0];
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(1, transaction.getVolumeSold());
+            transaction = account.transactions[1];
             Assert.AreEqual("XYZ", transaction.code);
             Assert.AreEqual(1, transaction.volume);
             Assert.AreEqual(1.0, transaction.price);
@@ -152,8 +164,29 @@ namespace sish_tests
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+
+            account.Sell("XYZ", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
+
+            Assert.AreEqual(3, account.transactions.Count);
+            transaction = account.transactions[0];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(5, transaction.volume);
+            Assert.AreEqual(5.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(3, transaction.getVolumeSold());
             transaction = account.transactions[1];
-            Assert.AreEqual("ABC", transaction.code);
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+            transaction = account.transactions[2];
+            Assert.AreEqual("XYZ", transaction.code);
             Assert.AreEqual(2, transaction.volume);
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
@@ -165,25 +198,24 @@ namespace sish_tests
         [TestMethod]
         public void TestSellWithFee()
         {
-            Account account = new Account(5, 0);
+            Account account = new Account();
+            account.setStartingBalance(5);
+            account.Buy("XYZ", 5, 1, DateTime.Parse("2021-09-30 21:32:00"));
             account.sellFeePercent = 5;
 
             account.Sell("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
 
-            Assert.AreEqual(1, account.transactions.Count);
+            Assert.AreEqual(2, account.transactions.Count);
             Transaction transaction = account.transactions[0];
             Assert.AreEqual("XYZ", transaction.code);
-            Assert.AreEqual(1, transaction.volume);
-            Assert.AreEqual(1.0, transaction.price);
-            Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
+            Assert.AreEqual(5, transaction.volume);
+            Assert.AreEqual(5.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
-            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
-
-            account.Sell("ABC", 2, 2, DateTime.Parse("2022-09-30 21:36:00"));
-
-            Assert.AreEqual(2, account.transactions.Count);
-            transaction = account.transactions[0];
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(1, transaction.getVolumeSold());
+            transaction = account.transactions[1];
             Assert.AreEqual("XYZ", transaction.code);
             Assert.AreEqual(1, transaction.volume);
             Assert.AreEqual(1.0, transaction.price);
@@ -191,13 +223,159 @@ namespace sish_tests
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+
+            account.Sell("XYZ", 2, 2, DateTime.Parse("2022-09-30 21:36:00"));
+
+            Assert.AreEqual(3, account.transactions.Count);
+            transaction = account.transactions[0];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(5, transaction.volume);
+            Assert.AreEqual(5.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(3, transaction.getVolumeSold());
             transaction = account.transactions[1];
-            Assert.AreEqual("ABC", transaction.code);
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+            transaction = account.transactions[2];
+            Assert.AreEqual("XYZ", transaction.code);
             Assert.AreEqual(2, transaction.volume);
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual("0.20", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
             Assert.AreEqual("9/30/2022 9:36:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+        }
+
+        [TestMethod]
+        public void TestSellWithSmallBuyVolumeHighSellVolume()
+        {
+            Account account = new Account();
+            account.setStartingBalance(3);
+            account.Buy("XYZ", 1, 1, DateTime.Parse("2021-09-30 21:32:00"));
+            account.Buy("XYZ", 1, 1, DateTime.Parse("2021-09-30 21:32:00"));
+            account.Buy("XYZ", 1, 1, DateTime.Parse("2021-09-30 21:32:00"));
+
+            account.Sell("XYZ", 3, 1, DateTime.Parse("2022-09-30 21:32:00"));
+
+            Assert.AreEqual(4, account.transactions.Count);
+            Transaction transaction = account.transactions[0];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(1, transaction.getVolumeSold());
+            transaction = account.transactions[1];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(1, transaction.getVolumeSold());
+            transaction = account.transactions[2];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(1, transaction.getVolumeSold());
+            transaction = account.transactions[3];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(3, transaction.volume);
+            Assert.AreEqual(3.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+        }
+
+        [TestMethod]
+        public void TestSellWithEqualBuySellVolume()
+        {
+            Account account = new Account();
+            account.setStartingBalance(1);
+            account.Buy("XYZ", 1, 1, DateTime.Parse("2021-09-30 21:32:00"));
+
+            account.Sell("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
+
+            Assert.AreEqual(2, account.transactions.Count);
+            Transaction transaction = account.transactions[0];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(1, transaction.getVolumeSold());
+            transaction = account.transactions[1];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+        }
+
+        [TestMethod]
+        public void TestSellWithHighBuyVolumeLowSellVolume()
+        {
+            Account account = new Account();
+            account.setStartingBalance(3);
+            account.Buy("XYZ", 3, 1, DateTime.Parse("2021-09-30 21:32:00"));
+
+            account.Sell("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
+            account.Sell("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
+            account.Sell("XYZ", 1, 1, DateTime.Parse("2022-09-30 21:32:00"));
+
+            Assert.AreEqual(4, account.transactions.Count);
+            Transaction transaction = account.transactions[0];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(3, transaction.volume);
+            Assert.AreEqual(3.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
+            Assert.AreEqual(3, transaction.getVolumeSold());
+            transaction = account.transactions[1];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+            transaction = account.transactions[2];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
+            transaction = account.transactions[3];
+            Assert.AreEqual("XYZ", transaction.code);
+            Assert.AreEqual(1, transaction.volume);
+            Assert.AreEqual(1.0, transaction.price);
+            Assert.AreEqual(0.0, transaction.fee);
+            Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
+            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
         }
 

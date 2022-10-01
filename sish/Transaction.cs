@@ -23,6 +23,8 @@ namespace sish
         public DateTime dateTime { get; set; }
         public TransactionType transactionType { get; set; }
 
+        private int volumeSold;
+
         public Transaction(string code, int volume, float price, float fee, float tax, DateTime dateTime, TransactionType transactionType)
         {
             this.code = code;
@@ -32,6 +34,32 @@ namespace sish
             this.tax = tax;
             this.dateTime = dateTime;
             this.transactionType = transactionType;
+            this.volumeSold = 0;
+        }
+
+        public int getVolumeSold()
+        {
+            if (transactionType != TransactionType.PURCHASE)
+            {
+                throw new NotSupportedException("Only purchases can be sold");
+            }
+
+            return volumeSold;
+        }
+
+        public void addToVolumeSold(int volumeSold)
+        {
+            if (transactionType != TransactionType.PURCHASE)
+            {
+                throw new NotSupportedException("Only purchases can be sold");
+            }
+
+            if (this.volumeSold + volumeSold > this.volume)
+            {
+                throw new ArgumentOutOfRangeException("Cannot sell more than was originally purchased");
+            }
+
+            this.volumeSold += volumeSold;
         }
 
         public override string ToString()
