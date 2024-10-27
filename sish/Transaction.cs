@@ -64,7 +64,7 @@ namespace sish
 
         public override string ToString()
         {
-            return $"Code: {code}, Volume: {volume}, Price: ${price}, Fee: ${fee}, Tax: ${tax}, Time: {dateTime}, Type: {transactionType.ToString()}";
+            return $"Code: {code}, Volume: {volume}, Price: ${price}, Fee: ${fee}, Tax: ${tax}, Time: {dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)}, Type: {transactionType}";
         }
     }
 }

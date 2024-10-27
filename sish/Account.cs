@@ -20,15 +20,6 @@ namespace sish
             transactions = new List<Transaction>();
         }
 
-        [Obsolete("Use argumentless constructor instead")]
-        public Account(int startingShareCount, float startingBalance)
-        {
-            shareCount = startingShareCount;
-            balance = startingBalance;
-            timePeriod = 7;
-            transactions = new List<Transaction>();
-        }
-
         public void setStartingBalance(float startingBalance)
         {
             if (transactions.Count > 0)

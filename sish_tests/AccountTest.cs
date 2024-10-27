@@ -46,7 +46,11 @@ namespace sish_tests
         [TestMethod]
         public void TestCanSell()
         {
-            Account account = new Account(5, 1);
+            Account account = new Account()
+            {
+                shareCount = 5
+            };
+            account.setStartingBalance(1);
 
             Assert.IsTrue(account.CanSell(1));
             Assert.IsFalse(account.CanSell(10));
@@ -67,7 +71,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:35:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:35:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(0, transaction.getVolumeSold());
 
@@ -80,7 +84,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:35:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:35:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(0, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -89,7 +93,7 @@ namespace sish_tests
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(0, transaction.getVolumeSold());
         }
@@ -110,7 +114,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(0, transaction.getVolumeSold());
 
@@ -123,7 +127,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(0, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -132,7 +136,7 @@ namespace sish_tests
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual("0.20", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(0, transaction.getVolumeSold());
         }
@@ -153,7 +157,7 @@ namespace sish_tests
             Assert.AreEqual(5.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(1, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -162,7 +166,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
 
             account.Sell("XYZ", 2, 2, DateTime.Parse("2022-09-30 21:32:00"));
@@ -174,7 +178,7 @@ namespace sish_tests
             Assert.AreEqual(5.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(3, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -183,7 +187,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
             transaction = account.transactions[2];
             Assert.AreEqual("XYZ", transaction.code);
@@ -191,7 +195,7 @@ namespace sish_tests
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
         }
 
@@ -212,7 +216,7 @@ namespace sish_tests
             Assert.AreEqual(5.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(1, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -221,7 +225,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
 
             account.Sell("XYZ", 2, 2, DateTime.Parse("2022-09-30 21:36:00"));
@@ -233,7 +237,7 @@ namespace sish_tests
             Assert.AreEqual(5.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(3, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -242,7 +246,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual("0.05", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
             transaction = account.transactions[2];
             Assert.AreEqual("XYZ", transaction.code);
@@ -250,7 +254,7 @@ namespace sish_tests
             Assert.AreEqual(4.0, transaction.price);
             Assert.AreEqual("0.20", transaction.fee.ToString("0.00"));
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:36:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:36:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
         }
 
@@ -272,7 +276,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(1, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -281,7 +285,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(1, transaction.getVolumeSold());
             transaction = account.transactions[2];
@@ -290,7 +294,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(1, transaction.getVolumeSold());
             transaction = account.transactions[3];
@@ -299,7 +303,7 @@ namespace sish_tests
             Assert.AreEqual(3.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
         }
 
@@ -319,7 +323,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(1, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -328,7 +332,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
         }
 
@@ -350,7 +354,7 @@ namespace sish_tests
             Assert.AreEqual(3.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2021 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2021-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.PURCHASE, transaction.transactionType);
             Assert.AreEqual(3, transaction.getVolumeSold());
             transaction = account.transactions[1];
@@ -359,7 +363,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
             transaction = account.transactions[2];
             Assert.AreEqual("XYZ", transaction.code);
@@ -367,7 +371,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
             transaction = account.transactions[3];
             Assert.AreEqual("XYZ", transaction.code);
@@ -375,7 +379,7 @@ namespace sish_tests
             Assert.AreEqual(1.0, transaction.price);
             Assert.AreEqual(0.0, transaction.fee);
             Assert.AreEqual("0.00", transaction.tax.ToString("0.00"));
-            Assert.AreEqual("9/30/2022 9:32:00 PM", transaction.dateTime.ToString());
+            Assert.AreEqual("2022-09-30T21:32:00", transaction.dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             Assert.AreEqual(Transaction.TransactionType.SALE, transaction.transactionType);
         }
 
