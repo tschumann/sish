@@ -35,6 +35,11 @@ namespace sish
             this.dateTime = dateTime;
             this.transactionType = transactionType;
             this.volumeSold = 0;
+
+            if (transactionType == TransactionType.SALE)
+            {
+                // TODO: apply tax rules
+            }
         }
 
         public int getVolumeSold()
