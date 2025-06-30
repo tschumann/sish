@@ -80,7 +80,7 @@ namespace sish
         /// <summary>
         /// Return the JSON data from the local cache, or if it isn't cached, get it from the given URL and cache it.
         /// </summary>
-        public static string getOrLoadJsonFile(string url, string fileName)
+        public static string? getOrLoadJsonFile(string url, string fileName)
         {
             string json = null;
 
