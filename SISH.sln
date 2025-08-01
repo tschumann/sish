@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sish", "sish\sish.csproj", "{29248C36-AC95-4DC2-9467-6F9801CAFCA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SISH", "SISH\SISH.csproj", "{29248C36-AC95-4DC2-9467-6F9801CAFCA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sish_tests", "sish_tests\sish_tests.csproj", "{A656BBC9-617C-4A41-896A-79C4388030C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SISH.Tests", "SISH.Tests\SISH.Tests.csproj", "{A656BBC9-617C-4A41-896A-79C4388030C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

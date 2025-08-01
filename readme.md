@@ -9,18 +9,12 @@ Running
 
 In GitBash:
 ```
-sish/run.sh XYZ --buy-fee-percent 1 --sell-fee-percent 1 --days 90
+powershell ./run.ps1 XYZ --buy-fee-percent 1 --sell-fee-percent 1 --days 90
 ```
 
 Testing
 -------
 
-In GitBash
 ```
-sish_tests/test.sh
-```
-
-In Powershell:
-```
-.\sish_tests\test.ps1
+powershell ./test.ps1
 ```
