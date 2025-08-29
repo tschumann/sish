@@ -1,4 +1,4 @@
-﻿namespace sish
+﻿namespace SISH
 {
     internal interface ITax
     {

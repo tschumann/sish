@@ -1,4 +1,4 @@
-﻿namespace sish
+﻿namespace SISH
 {
     public class IncomeTax : ITax
     {

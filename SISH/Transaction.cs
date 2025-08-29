@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace sish
+namespace SISH
 {
     public class Transaction
     {

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace sish
+namespace SISH
 {
     class DataParser
     {

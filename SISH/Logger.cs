@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace sish
+namespace SISH
 {
     public class Logger
     {

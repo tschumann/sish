@@ -1,8 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using sish;
-
-namespace sish_tests
+namespace SISH.Tests
 {
     [TestClass]
     public class LoggerTest

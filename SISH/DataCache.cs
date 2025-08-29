@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace sish
+namespace SISH
 {
     /// <summary>
     /// Class <c>DataCache</c> abstracts away the data storage. It gets it and caches it if required, otherwise it pulls from the cache.

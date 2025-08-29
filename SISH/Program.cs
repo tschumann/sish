@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace sish
+namespace SISH
 {
     class Sish
     {

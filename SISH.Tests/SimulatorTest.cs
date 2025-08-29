@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-using sish;
-
-namespace sish_tests
+namespace SISH.Tests
 {
     [TestClass]
     public class SimulatorTest
